@@ -1,0 +1,112 @@
+@font-face {
+  font-family: 'Circe';
+  src: url('../fonts/Circe-Regular/Circe-Regular.woff') format('woff2'), url('../fonts/Circe-Regular/Circe-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.container {
+  max-width: 1920px;
+  width: 100%;
+  margin: 0 auto;
+}
+.header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  padding: 20px 50px;
+  background: -webkit-gradient(linear, left top, right top, from(#ffc0cb), to(#b0e0e6));
+  background: linear-gradient(to right, #ffc0cb, #b0e0e6);
+}
+.header .cart-button {
+  -webkit-transition-duration: 0.3s;
+          transition-duration: 0.3s;
+  outline: none;
+  width: 150px;
+  height: 50px;
+  background-color: powderblue;
+  border-radius: 5px;
+  font-size: 16px;
+  font-family: 'Circe';
+  color: black;
+  border: 1px solid grey;
+}
+.header .cart-button:hover {
+  background-color: pink;
+  color: white;
+  cursor: pointer;
+}
+.goods-list {
+  padding: 50px 50px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+.goods-list .goods-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  border: 1px solid lightgrey;
+  width: 200px;
+  height: 330px;
+  margin: 15px;
+  -webkit-box-shadow: 3px 3px 7px lightgrey;
+          box-shadow: 3px 3px 7px lightgrey;
+  text-align: center;
+}
+.goods-list .goods-item img {
+  margin-bottom: 15px;
+}
+.goods-list .goods-item_title {
+  display: inline;
+  font-family: 'Circe';
+  font-size: 18px;
+  margin: 0 auto;
+}
+.goods-list .goods-item_price {
+  font-family: 'Circe';
+  font-size: 16px;
+  width: 100%;
+  margin: 0;
+}
+.goods-list .goods-item_button {
+  -webkit-transition-duration: 0.3s;
+          transition-duration: 0.3s;
+  outline: none;
+  width: 150px;
+  height: 50px;
+  background-color: powderblue;
+  border-radius: 5px;
+  font-size: 16px;
+  font-family: 'Circe';
+  color: black;
+  border: 1px solid grey;
+  -ms-flex-item-align: end;
+      align-self: flex-end;
+  margin: 0 auto 20px auto;
+}
+.goods-list .goods-item_button:hover {
+  background-color: pink;
+  color: white;
+  cursor: pointer;
+}
+@media screen and (max-width: 559px) {
+  .header {
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
+}
