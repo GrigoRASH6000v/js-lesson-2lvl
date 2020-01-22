@@ -36,7 +36,12 @@ class GoodsList {
     }
     addToCart(goodId) {
         const good = this.findGood(goodId);
-        console.log(good);
+        //console.log(good)
+        
+        cart.addCartItem(good)
+        //console.log(cart.goodsCart)
+        
+        
     }
     fetchGoods() {
         this.goods = [
@@ -58,12 +63,81 @@ class GoodsList {
     }
 }
 
+
+
+const cartItem={
+    render(element){
+        return `<div class="cart-item" data-id="${element.id}">
+                    <img src="${element.img}" alt="alt">
+                    <table class="cart-item_information">
+                    <caption class="cart-item_title">${element.title}</caption>
+                    <tr>
+                        <td>Цена</td>
+                        <td>Колличество</td>
+                        <td>Итого</td>
+                    </tr>
+                    <tr>
+                        <td>${element.price}</td>
+                        <td>
+                            <button class="quantity-less btn" data-purpose="less btn">&laquo;</button>${element.quantity}<button class="quantity-more btn" data-purpose="more">&raquo;</button></td>
+                        <td>${element.price}</td>
+                    </tr>
+                    </table>
+                    <button class="cart-item_delete-btn btn" data-purpose="del">&#10006;</button>
+                </div>`
+    },
+}
+
+const cart={
+    container: '.cart',
+    goodsCart: [ ],
+    checkQuantity(checkItem){
+       let result = this.goodsCart.find(el=>el.id==checkItem.id)
+       return result
+    },
+    changeQuantity(checkItem){
+        let result = this.goodsCart.find(el=>el.id==checkItem.id)
+        result.quantity++
+    },
+    initListeners(){
+        const button = document.querySelectorAll('.btn');
+        button.forEach(el=>{
+            el.addEventListener('click', (evt)=>{
+                return evt.target.dataset.purpose
+            })
+        })
+        
+    },
+    addCartItem(item){
+        if(this.checkQuantity(item)==undefined){
+            item.quantity = 1;
+            this.goodsCart.push(item)
+            this.render(this.goodsCart)
+        }else{
+            this.changeQuantity(item)
+            this.render(this.goodsCart)
+        }
+    },
+    deleteGoods(){
+        
+        
+    },
+    render(arrGoods){
+        let goodListCart=''
+        arrGoods.forEach(el=>{
+            goodListCart+=cartItem.render(el);
+        })
+        document.querySelector(this.container).innerHTML=goodListCart;
+        this.initListeners()
+    }
+}
+
+
 const list = new GoodsList('.goods-list');
 list.fetchGoods();
 list.render();
-
-class cart {
-    constructor(){
-        
-    }
-}
+let cartBtn = document.querySelector('.cart-button');
+let cart12 = document.querySelector('.cart');
+cartBtn.addEventListener('click', ()=>{
+    cart12.classList.toggle('visible')
+})

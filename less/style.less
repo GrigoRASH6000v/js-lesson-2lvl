@@ -31,9 +31,96 @@
     justify-content: flex-end;
     padding: 20px 50px;
     background: linear-gradient(to right, pink, powderblue);
-    .cart-button{
-        .btn(150px, 50px);
-        border: 1px solid grey;
+    
+    .cart-wrp{
+        position: relative;
+        .cart-button{
+            .btn(150px, 50px);
+            border: 1px solid grey;
+        }
+        .cart{
+            transition-duration: 0.3s;
+            padding: 15px;
+            background-color: white;
+            position: absolute;
+            top: 70px;
+            right: -30px;
+            
+        
+            transform: translateX(520px);
+            display: none;
+            box-shadow: 0 3px 7px lightgrey;
+            // min-width: 200px;
+            // width: 100%;
+            &:before{
+                content:'';
+                width: 40px;
+                height: 15px;
+                position: absolute;
+                top: -15px;
+                right: 90px;
+                background: url(../img/triangle.png) center no-repeat;
+                background-size: cover;
+            }
+            .cart-item{
+                transition-duration: 0.3s;
+                display: flex;
+                align-items: center;
+                padding: 10px 0;
+                border-bottom: 1px solid powderblue;
+                &_information{
+                    font-family: 'Circe';
+                    margin: 0 20px;
+                    .cart-item_title{
+                        font-weight: 700;
+                        font-size: 18px;
+                        margin: 0 0 10px 0;
+                        text-align: center;
+                    }
+                    tr{
+                        border: 1px solid green; 
+                    }
+                    td{
+                        padding: 0 10px; 
+                        text-align: center;
+                        font-size: 18px;
+                        vertical-align: middle;
+                    }
+                    .quantity-less,
+                    .quantity-more{
+                        transition-duration: 0.3s;
+                        background: none;
+                        border: none;
+                        outline: none;
+                        margin: 0 10px;
+                        cursor: pointer;
+                        color: pink;
+                        font-size: 18px;
+                        &:hover{
+                        
+                            color: red;
+                        }
+                    }
+                }
+                &_delete-btn{
+                    transition-duration: 0.3s;
+                    border: none;
+                    background: none;
+                    outline: none;
+                    color: red;
+                    font-size: 20px;
+                    cursor: pointer;
+                    &:hover{
+                        
+                        color: darken(red, 20%);
+                    }
+                }
+            }
+        }
+        .visible{
+            transform: translateX(0);
+            display: block;
+        }
     }
     //box-shadow: 0 3px 7px lightgrey;
 }
