@@ -11,15 +11,16 @@
 
 .btn(@wd, @hg){
     transition-duration: 0.3s;
+    outline: none;
     width: @wd;
     height: @hg;
-    background-color: white;
+    background-color: powderblue;
     border-radius: 5px;
     font-size: 16px;
     font-family: 'Circe';
     color: black;
     &:hover{
-        background-color: grey;
+        background-color: pink;
         color: white;
         cursor: pointer;
     }
@@ -29,12 +30,12 @@
     display: flex;
     justify-content: flex-end;
     padding: 20px 50px;
-    
+    background: linear-gradient(to right, pink, powderblue);
     .cart-button{
         .btn(150px, 50px);
         border: 1px solid grey;
     }
-    box-shadow: 0 3px 7px lightgrey;
+    //box-shadow: 0 3px 7px lightgrey;
 }
 .main{
     
