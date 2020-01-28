@@ -67,7 +67,7 @@ class GoodsList {
 
 const cartItem={
     render(element){
-        return `<div class="cart-item" data-id="${element.id}">
+        return `<div class="cart-item" >
                     <img src="${element.img}" alt="alt">
                     <table class="cart-item_information">
                     <caption class="cart-item_title">${element.title}</caption>
@@ -78,7 +78,7 @@ const cartItem={
                     </tr>
                     <tr>
                         <td>${element.price}</td>
-                        <td>
+                        <td data-id="${element.id}">
                             <button class="quantity-less btn" data-purpose="less btn">&laquo;</button>${element.quantity}<button class="quantity-more btn" data-purpose="more">&raquo;</button></td>
                         <td>${element.price}</td>
                     </tr>

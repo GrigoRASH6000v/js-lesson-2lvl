@@ -53,8 +53,6 @@
   position: absolute;
   top: 70px;
   right: -30px;
-  -webkit-transform: translateX(520px);
-          transform: translateX(520px);
   display: none;
   -webkit-box-shadow: 0 3px 7px lightgrey;
           box-shadow: 0 3px 7px lightgrey;
@@ -130,8 +128,6 @@
   color: #990000;
 }
 .header .cart-wrp .visible {
-  -webkit-transform: translateX(0);
-          transform: translateX(0);
   display: block;
 }
 .goods-list {
