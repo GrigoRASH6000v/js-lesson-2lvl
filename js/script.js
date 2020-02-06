@@ -1,143 +1,142 @@
-class GoodsItem {
-    constructor(id, title = 'Без названия', price = 0, img = '') {
-        this.id = id;
-        this.title = title;
-        this.price = price;
-        this.img = img;
-    }
-    render() {
-        return `
-            <div class="goods-item" data-id="${this.id}">
-                <img src="${this.img}" alt="alt">
-                <h3 class="goods-item_title">${this.title}</h3>
-                <p class="goods-item_price">${this.price}</p>
-                <button class="goods-item_button">Добавить</button>
-            </div>
-        `;
-    }
-}
+ const API_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses'
+ 
+ 
+ function makeGetRequest(url){
+     return new Promise((resolve, reject)=>{
+        let xhr;
+        if(window.XMLHttpRequest){
+            xhr = new window.XMLHttpRequest();
+        }else{
+            xhr = new window.ActiveXObject("Microsoft.XMLHTTP");
+        };
+        xhr.onreadystatechange = function(){ //Ловим момент ответа от сервера
+            if(xhr.readyState===4){ // В redystate хранится статус запроса, цифра 4, означает что запрос выполнен
+                if(xhr.status!==200){
+                    reject(xhr.responseText)
+                }
+                let body = JSON.parse(xhr.responseText)
+                resolve(body) //responseText возвращает строковое значение, содержащее ответ на запрос в виде текста, или null, если запрос был неудачным или еще не был отправлен.
+            } 
+        };
+        xhr.open('GET', url);
+        xhr.send();
+     })
+     
+ }
 
+ 
+ //Конструктор единицы товара
+class GoodsItem {
+    constructor(id=0, title='Без названия', price=0, img='https://via.placeholder.com/200x150'){
+        this.id=id;
+        this.title=title;
+        this.price=price;
+        this.img=img;
+    }
+    initListeners(){
+
+    }
+    render(){
+        const html = `<div class="goods-item" data-id="${this.id}">
+                        <img src="${this.img}" alt="alt">
+                        <h3 class="goods-item_title">${this.title}</h3>
+                        <p class="goods-item_price">${this.price}</p>
+                        <button class="goods-item_button">Добавить</button>
+                    </div>`;
+        this.initListeners();
+        return html;
+    };
+};
+
+//Родительский класс
 class GoodsList {
-    constructor(container) {
+    constructor(container){
         this.container = document.querySelector(container);
-        this.goods = [];
+        this.goods = []; 
+    };
+    //Метод записывает данные с сервера в массив товаров this.goods
+    fetchGoods(){};
+    //При клике, метод вызывает метод this.addToCard и передаёт в него найденый по id элемент из массива this.goods
+    initListener(){};
+    findGood(id){
+       return  this.goods.find(el=>el.id_product===id)
     }
-    initListeners() {
-        const buttons = [...this.container.querySelectorAll('.goods-item_button')];
-        buttons.forEach(button => {
-            button.addEventListener('click', (event) => {
-                const goodId = event.target.parentElement.getAttribute('data-id');
-                this.addToCart(parseInt(goodId, 10));
-            })
-        })
-    }
-    findGood(id) {
-        return this.goods.find(good => good.id === id);
-    }
-    addToCart(goodId) {
-        const good = this.findGood(goodId);
-        //console.log(good)
-        
-        cart.addCartItem(good)
-        //console.log(cart.goodsCart)
-        
-        
-    }
-    fetchGoods() {
-        this.goods = [
-            {id: 1, title: "Робот-пылесос xiaomi", price: 20000, img: 'https://via.placeholder.com/200x150'},
-            {id: 2, title: "Samsung Galaxy", price: 21500, img: 'https://via.placeholder.com/200x150'},
-            {id: 3, title: "Стиральная машина hotpoint", price: 32000, img: 'https://via.placeholder.com/200x150'},
-            {id: 4, title: "Умные часы apple watch", price: 26000, img: 'https://via.placeholder.com/200x150'},
-            {id: 5, title: "Посудомоечная машина bosh", price: 26000, img: 'https://via.placeholder.com/200x150'},
-        ]
-    }
-    render() {
+    
+    //Метод проходит по массиву this.goods, записывает данные в переменную listHtml, отрисовывает данные на экран.
+    render(){
         let listHtml = '';
-        this.goods.forEach(good => {
-            const goodItem = new GoodsItem(good.id, good.title, good.price, good.img);
-            listHtml += goodItem.render();
+        this.goods.forEach(good=>{
+            const goodItem = new GoodsItem (good.id_product, good.product_name, good.price, good.img);
+            listHtml+=goodItem.render();
         });
         this.container.innerHTML = listHtml;
-        this.initListeners();
-    }
-}
+        this.initListener();
+    };
+};
 
+//Класс страницы товаров, наследуется от родительского класса GoodsList
+class GoodsPage extends GoodsList{
+    addToCard(goodId){
+        const good = this.findGood(goodId)
+        console.log(good)
+    };
+    initListener(){
+        const buttons = [...this.container.querySelectorAll('.goods-item_button')];
+        buttons.forEach((button)=>{
+            button.addEventListener('click', (evt)=>{
+                this.addToCard(parseInt(evt.target.parentNode.dataset.id, 10))
+            });
+        });
+    };
+    fetchGoods(){
+        return    makeGetRequest(`${API_URL}/catalogData.json`).then((res)=>{
+                    this.goods = res;
+                })
+    };
+};
 
-
-const cartItem={
-    render(element){
-        return `<div class="cart-item" >
-                    <img src="${element.img}" alt="alt">
-                    <table class="cart-item_information">
-                    <caption class="cart-item_title">${element.title}</caption>
-                    <tr>
-                        <td>Цена</td>
-                        <td>Колличество</td>
-                        <td>Итого</td>
-                    </tr>
-                    <tr>
-                        <td>${element.price}</td>
-                        <td data-id="${element.id}">
-                            <button class="quantity-less btn" data-purpose="less btn">&laquo;</button>${element.quantity}<button class="quantity-more btn" data-purpose="more">&raquo;</button></td>
-                        <td>${element.price}</td>
-                    </tr>
-                    </table>
-                    <button class="cart-item_delete-btn btn" data-purpose="del">&#10006;</button>
-                </div>`
-    },
-}
-
-const cart={
-    container: '.cart',
-    goodsCart: [ ],
-    checkQuantity(checkItem){
-       let result = this.goodsCart.find(el=>el.id==checkItem.id)
-       return result
-    },
-    changeQuantity(checkItem){
-        let result = this.goodsCart.find(el=>el.id==checkItem.id)
-        result.quantity++
-    },
-    initListeners(){
-        const button = document.querySelectorAll('.btn');
-        button.forEach(el=>{
-            el.addEventListener('click', (evt)=>{
-                return evt.target.dataset.purpose
-            })
-        })
-        
-    },
-    addCartItem(item){
-        if(this.checkQuantity(item)==undefined){
-            item.quantity = 1;
-            this.goodsCart.push(item)
-            this.render(this.goodsCart)
-        }else{
-            this.changeQuantity(item)
-            this.render(this.goodsCart)
+class CartItem extends GoodsItem{
+        constructor(...attrs){ //Собираем все элементы родительского конструктора
+            super(attrs); //Передаём все элементы в новый конструктор
+            this.count=0
         }
-    },
-    deleteGoods(){
-        
-        
-    },
-    render(arrGoods){
-        let goodListCart=''
-        arrGoods.forEach(el=>{
-            goodListCart+=cartItem.render(el);
-        })
-        document.querySelector(this.container).innerHTML=goodListCart;
-        this.initListeners()
-    }
-}
+        incCount(){};
+        decCount(){};
+};
+
+class Cart extends GoodsList{
+    removeToCart(goodId){};
+    cleanCart(){};
+    updateCartItem(goodId, goods){};
+};
+
+const list = new GoodsPage(".goods-list"); // Создание обьекта на основе класса GoodsList
+list.fetchGoods().then(()=>{
+    list.render();
+});
 
 
-const list = new GoodsList('.goods-list');
-list.fetchGoods();
-list.render();
-let cartBtn = document.querySelector('.cart-button');
-let cart12 = document.querySelector('.cart');
-cartBtn.addEventListener('click', ()=>{
-    cart12.classList.toggle('visible')
-})
+
+
+
+/*const async = (a)=>{
+    return new Promise((resolve, reject)=>{
+        setTimeout(()=>{
+            if(a){
+                const b=a+1
+                resolve(b)
+            }else{
+                reject('Errorrr')
+            }
+        }, 2000);
+    });
+};
+
+async(10).then((res)=>{
+    console.log(res);
+    return async(res)
+}).then((res)=>{
+    console.log(res)
+}).catch((e)=>{
+    console.error(e)
+});*/
