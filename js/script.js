@@ -88,10 +88,12 @@ class GoodsPage extends GoodsList{
             });
         });
     };
-    fetchGoods(){
-        return    makeGetRequest(`${API_URL}/catalogData.json`).then((res)=>{
-                    this.goods = res;
-                })
+    async fetchGoods(){
+        try{
+            this.goods = await makeGetRequest(`${API_URL}/catalogData.json`); //await означает: дождаться выполнения промиса
+        }catch(e){
+            console.error(`Ошибка ${e}`);
+        }
     };
 };
 
